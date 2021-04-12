@@ -1,0 +1,363 @@
+﻿@model IEnumerable<InquiadTradingApp.Models.Purchase>
+@{
+    ViewData["Title"] = "Purchase Details";
+}
+
+@section Css {
+    @{await Html.RenderPartialAsync("_DataTableCssPartial");}
+}
+
+@section Sole {
+    <style>
+
+
+        .table tr th:last-child {
+            width: 50px;
+        }
+
+        .table tr th {
+            text-align: center;
+        }
+
+        .table tr td {
+            text-align: center;
+        }
+    </style>
+}
+
+<div class="container-fluid mt-4">
+    <div class="card animated fadeIn overflow-hidden">
+        <div class="card-header p-3">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="mb-0 skewed skewed-yellow text-dark d-inline-block text-uppercase ls-1">Details of @ViewBag.Purchase.VoucharNo , Product : @ViewBag.Purchase.Product.Name</h3>
+                </div>
+               
+            </div>
+        </div>
+        <div class="card-body px-0 pb-2">
+            <div class="">
+
+                <table class="table align-items-center  table-striped table-bordered">
+                    <thead class="thead-light">
+                        @{
+                            double tonAmount = ViewBag.Purchase.TonAmount;
+                            double packAmount = ViewBag.Purchase.PackAmount;
+                        }
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Client/Supplier
+                            </th>
+
+
+                            <th>
+                                Pack Amount (@ViewBag.Purchase.PackSize.Name)
+                            </th>
+                            <th>
+                                Ton Amount
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4" class="bg-gray">
+                                Initial Purchase
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td>
+                                @String.Format("{0:dd-MM-yyyy}", ViewBag.Purchase.PurchaseDate)
+                            </td>
+
+                            <td>
+                                @ViewBag.Purchase.Vendor.Name
+                            </td>
+
+                            <td>
+                                @ViewBag.Purchase.PackAmount
+                            </td>
+                            <td>
+                                @ViewBag.Purchase.TonAmount
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="bg-gray">
+                                Purchase Returns
+                            </td>
+                        </tr>
+                        @if (ViewBag.PurchaseReturns.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="4">
+                                    No Enrty For Purchase Return
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in ViewBag.PurchaseReturns)
+                            {
+                                tonAmount -= Math.Round(item.TonAmount, 2);
+                                packAmount -= Math.Round(item.PackAmount, 2);
+                                <tr>
+
+                                    <td>
+                                        @String.Format("{0:dd-MM-yyyy}", item.ReturnDate)
+
+                                    </td>
+                                    <td>N/A</td>
+                                    <td>
+                                        @item.PackAmount
+                                    </td>
+                                    <td>
+                                        @item.TonAmount
+                                    </td>
+
+                                </tr>
+                            }
+                            <tr>
+                                <td colspan="2">Stock After Purchase Return</td>
+                                <td>
+                                    @Math.Round(packAmount, 2)
+
+                                </td>
+                                <td>
+                                    @Math.Round(tonAmount, 2)
+
+                                </td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <td colspan="4" class="bg-gray">
+                                Sales
+                            </td>
+                        </tr>
+                        @if (ViewBag.Sales.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="4">
+                                    No Enrty For Sales
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in ViewBag.Sales)
+                            {
+                                tonAmount -= Math.Round(item.TonAmount, 2);
+                                packAmount -= Math.Round(item.PackAmount, 2);
+                            <tr>
+
+                                <td>
+                                    @String.Format("{0:dd-MM-yyyy}", item.SaleDate)
+
+                                </td>
+                                <td>
+                                    @item.Client.Name
+                                </td>
+                                <td>
+                                    @item.PackAmount
+                                </td>
+                                <td>
+                                    @item.TonAmount
+                                </td>
+
+                            </tr>
+                            }
+                            <tr>
+                                <td colspan="2">Stock After Sales</td>
+                                <td>
+                                    @Math.Round(packAmount, 2)
+
+                                </td>
+                                <td>
+                                    @Math.Round(tonAmount, 2)
+
+                                </td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <td colspan="4" class="bg-gray">
+                                Sale Returns
+                            </td>
+                        </tr>
+                        @if (ViewBag.SaleReturns.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="4">
+                                    No Enrty For Sale Return
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in ViewBag.SaleReturns)
+                            {
+                                tonAmount += Math.Round(item.TonAmount, 2);
+                                packAmount += Math.Round(item.PackAmount, 2);
+                                <tr>
+
+                                    <td>
+                                        @String.Format("{0:dd-MM-yyyy}", item.ReturnDate)
+
+                                    </td>
+                                    <td>N/A</td>
+                                    <td>
+                                        @item.PackAmount
+                                    </td>
+                                    <td>
+                                        @item.TonAmount
+                                    </td>
+
+                                </tr>
+                            }
+                            <tr>
+                                <td colspan="2">Stock After Sale Returns</td>
+                                <td>
+                                    @Math.Round(packAmount, 2)
+
+                                </td>
+                                <td>
+                                    @Math.Round(tonAmount, 2)
+
+                                </td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <td colspan="4" class="bg-gray">
+                                Local Sales
+                            </td>
+                        </tr>
+                        @if (ViewBag.LocalSales.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="4">
+                                    No Enrty For Local Sale
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in ViewBag.LocalSales)
+                            {
+                                tonAmount -= Math.Round(item.TonAMount, 2);
+                                packAmount -= Math.Round(item.PackAmount, 2);
+                                <tr>
+
+                                    <td>
+                                        @String.Format("{0:dd-MM-yyyy}", item.SaleDate)
+
+                                    </td>
+                                    <td>
+                                        @item.ClientName
+                                    </td>
+                                    <td>
+                                        @item.PackAmount
+                                    </td>
+                                    <td>
+                                        @item.TonAMount
+                                    </td>
+
+                                </tr>
+                            }
+                            <tr>
+                                <td colspan="2">Stock After Local Sales</td>
+                                <td>
+                                    @Math.Round(packAmount, 2)
+
+                                </td>
+                                <td>
+                                    @Math.Round(tonAmount, 2)
+
+                                </td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <td colspan="4" class="bg-gray">
+                                Damaged Products
+                            </td>
+                        </tr>
+                        @if (ViewBag.DamagedProducts.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="4">
+                                    No Enrty For Damaged Product
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in ViewBag.DamagedProducts)
+                            {
+                                tonAmount -= Math.Round(item.TonAMount, 2);
+                                packAmount -= Math.Round(item.PackAmount, 2);
+                                <tr>
+
+                                    <td>
+                                        @String.Format("{0:dd-MM-yyyy}", item.DamageDate)
+                                    </td>
+                                    <td>N/A</td>
+                                    <td>
+                                        @item.PackAmount
+                                    </td>
+                                    <td>
+                                        @item.TonAMount
+                                    </td>
+
+                                </tr>
+                            }
+                            <tr>
+                                <td colspan="2">Stock After Product Damage</td>
+                                <td>
+                                    @Math.Round(packAmount, 2)
+
+                                </td>
+                                <td>
+                                    @Math.Round(tonAmount, 2)
+
+                                </td>
+                            </tr>
+                        }
+                        <tr class="bg-green">
+                            <td colspan="2">Final Stock</td>
+                            <td>
+                                @Math.Round(packAmount, 2)
+
+                            </td>
+                            <td>
+                                @Math.Round(tonAmount, 2)
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script asp-append-version="true" type="text/javascript" src="~/vendor/datatable/js/jquery.dataTables.min.js"></script>
+    <script asp-append-version="true" type="text/javascript" src="~/vendor/datatable/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

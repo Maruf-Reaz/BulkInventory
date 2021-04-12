@@ -1,0 +1,163 @@
+﻿@model IEnumerable<InquiadTradingApp.Models.LocalSale>
+@{
+    ViewData["Title"] = "Local Sales";
+}
+
+@section Css {
+    @{await Html.RenderPartialAsync("_DataTableCssPartial");}
+}
+
+@section Sole {
+    <style>
+
+
+        .table tr th:last-child {
+            width: 50px;
+        }
+
+        .table tr th {
+            text-align: center;
+        }
+
+        .table tr td {
+            text-align: center;
+        }
+    </style>
+}
+
+<div class="container-fluid mt-4">
+    <div class="card animated fadeIn overflow-hidden">
+        <div class="card-header p-3">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="mb-0 skewed skewed-yellow text-dark d-inline-block text-uppercase ls-1">Local Sales</h3>
+                </div>
+                <div class="col text-right">
+                    <a asp-action="Create" class="btn btn-create">New</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body px-0 pb-2">
+            <div class="table-responsive">
+
+                <table class="table align-items-center  table-striped table-bordered" id="datatable-basic">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Purchase Vouchar No
+                            </th>
+                            <th>
+                                Sale Vouchar No
+                            </th>
+                            <th>
+                                Client Name
+                            </th>
+
+                            <th>
+                                Product
+                            </th>
+                            <th>
+                                Warehouse
+                            </th>
+
+                            <th>
+                                Amount (Pack)
+                            </th>
+                            <th>
+                                Amount (tk)
+                            </th>
+
+                            <th>
+                                Remarks
+                            </th>
+
+                            <th class="text-center">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                @String.Format("{0:dd-MM-yyyy}", item.SaleDate)
+                            </td>
+                            <td>
+                                @item.Purchase.VoucharNo
+                            </td>
+
+                            <td>
+                                @item.VoucharNo
+                            </td>
+                            <td>
+                                @item.ClientName
+                            </td>
+                            <td>
+                                @item.Purchase.Product.Name
+                            </td>
+
+                            <td>
+                                @item.Purchase.WareHouse.Name
+                            </td>
+                            <td>
+                                @item.PackAmount
+                            </td>
+                            <td>
+                                @item.Amount
+                            </td>
+
+                            <td>
+                                @item.Remarks
+                            </td>
+
+
+
+                            <td class="text-center">
+                                <div class="btn-group">
+
+                                    @if (item.Status == 0)
+                                    {
+
+                                        <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                                        <a class="btn btn-success btn-sm" asp-action="ApproveLocalSale" asp-route-id="@item.Id">Approve</a>
+
+
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-success btn-sm">Finalized</a>
+                                    }
+
+
+
+                                </div>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script asp-append-version="true" type="text/javascript" src="~/vendor/datatable/js/jquery.dataTables.min.js"></script>
+    <script asp-append-version="true" type="text/javascript" src="~/vendor/datatable/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

@@ -1,0 +1,256 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<InquiadTradingApp.Models.Common.Authentication.ApplicationUser> UserManager
+@{
+    var user = await UserManager.FindByNameAsync(Context.User.Identity.Name);
+}
+
+<nav class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light" id="sidenav-main">
+    <div class="scrollbar-inner">
+        <div class="sidenav-header d-flex align-items-center">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                <img asp-append-version="true" src="~/asset/img/tcms.png" class="navbar-brand-img" alt="...">
+            </a>
+            <div class="mx-auto">
+                <div class="sidenav-toggler active" data-action="sidenav-unpin" data-target="#sidenav-main">
+                    <div class="sidenav-toggler-inner">
+                        <i class="sidenav-toggler-line"></i>
+                        <i class="sidenav-toggler-line"></i>
+                        <i class="sidenav-toggler-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="navbar-inner">
+            <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+                <ul class="navbar-nav">
+                    @if (await UserManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        <li class="nav-item nav_level0">
+                            <a class="nav-link position-relative" asp-controller="Home" asp-action="Index">
+                                <i class="far fa-tachometer-alt text-gray"></i>
+                                <span class="nav-link-text text-nowrap text-dark">Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#admin-option1" data-toggle="collapse" role="button"
+                               aria-expanded="false" aria-controls="navbar-examples">
+                                <i class="far fa-user-cog text-gray"></i>
+                                <span class="nav-link-text text-nowrap text-dark position-relative">Party Setup</span>
+                            </a>
+                            <div class="collapse nav_level1" id="admin-option1">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="WareHouses" asp-action="Index">
+                                            Warehouses
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="Brokers" asp-action="Index">
+                                            Brokers
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="Vendors" asp-action="Index">
+                                            Suppliers
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="Clients" asp-action="Index">
+                                            Clients
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#admin-option2" data-toggle="collapse" role="button"
+                               aria-expanded="false" aria-controls="navbar-examples">
+                                <i class="far fa-boxes text-gray"></i>
+                                <span class="nav-link-text text-nowrap text-dark position-relative">Product Setup</span>
+                            </a>
+                            <div class="collapse nav_level1" id="admin-option2">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="PackSizes" asp-action="Index">
+                                            Pack Sizes
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="ProductCatagories" asp-action="Index">
+                                            Product Catagories
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="Products" asp-action="Index">
+                                            Products
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#admin-option3" data-toggle="collapse" role="button"
+                               aria-expanded="false" aria-controls="navbar-examples">
+                                <i class="far fa-arrows-h text-gray"></i>
+                                <span class="nav-link-text text-nowrap text-dark position-relative">Transactions</span>
+                            </a>
+                            <div class="collapse nav_level1" id="admin-option3">
+                                <ul class="nav nav-sm flex-column">
+
+
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="Purchases" asp-action="Index">
+                                            Purchases
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="Sales" asp-action="Index">
+                                            Sales
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="PurchaseReturns" asp-action="Index">
+                                            Purchase Returns
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="SaleReturns" asp-action="Index">
+                                            Sale Returns
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="WareHouseTransfers" asp-action="Index">
+                                            Warehouse Transfers
+                                        </a>
+                                    </li>
+
+                                      <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="LocalSales" asp-action="Index">
+                                            Local Sale
+                                        </a>
+                                    </li>
+                                      <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="DamageProducts" asp-action="Index">
+                                            Damaged Products
+                                        </a>
+                                    </li>
+                                      <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="RentWareHouses" asp-action="Index">
+                                            Rent Warehouses
+                                        </a>
+                                    </li>
+
+
+
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#admin-option4" data-toggle="collapse" role="button"
+                               aria-expanded="false" aria-controls="navbar-examples">
+                                <i class="far fa-paste text-gray"></i>
+                                <span class="nav-link-text text-nowrap text-dark position-relative">Reports</span>
+                            </a>
+                            <div class="collapse nav_level1" id="admin-option4">
+                                <ul class="nav nav-sm flex-column">
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="Products" asp-action="ProductIndex">
+                                            Item Stocks
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="WareHouses" asp-action="WareHouseIndex">
+                                            Warehouse Stocks
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="Purchases" asp-action="PurchaseStatement">
+                                            Purchase Statement
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="PurchaseReturns" asp-action="PurchaseReturnStatement">
+                                            Purchase Return Statement
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="Sales" asp-action="SaleStatement">
+                                            Sales Statement
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="SaleReturns" asp-action="SalesReturnStatement">
+                                            Sale Returns Statement
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="LocalSales" asp-action="LocalSaleStatement">
+                                            Local Sale Statement
+                                        </a>
+                                    </li>
+
+
+                                        <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="Purchases" asp-action="MISReport">
+                                            Profit/Loss Report
+                                        </a>
+                                    </li>
+                                      <li class="nav-item">
+                                        <a class="nav-link text-nowrap" asp-controller="Purchases" asp-action="MISReportPercent">
+                                           MIS Report
+                                        </a>
+                                    </li>
+
+
+
+
+                                </ul>
+                            </div>
+                        </li>
+
+                    }
+
+                    else if (await UserManager.IsInRoleAsync(user, "DataEntryOperator"))
+                    {
+                        <li class="nav-item nav_level0">
+                            <a class="nav-link position-relative" asp-controller="Home" asp-action="Index">
+                                <i class="far fa-tachometer-alt text-gray"></i>
+                                <span class="nav-link-text text-nowrap text-dark">Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item nav_level0">
+                            <a class="nav-link position-relative" asp-controller="Tarrifs" asp-action="MarchentTarrifIndex">
+                                <i class="far fa-truck-container text-gray"></i>
+                                <span class="nav-link-text text-nowrap text-dark">Tarrifs</span>
+                            </a>
+                        </li>
+
+                    }
+                    else
+                    {
+                        <li class="nav-item nav_level0">
+                            <a class="nav-link position-relative" asp-controller="Home" asp-action="Index">
+                                <i class="far fa-tachometer-alt text-gray"></i>
+                                <span class="nav-link-text text-nowrap text-dark">Dashboard</span>
+                            </a>
+                        </li>
+
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

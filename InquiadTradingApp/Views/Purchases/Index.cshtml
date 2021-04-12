@@ -1,0 +1,599 @@
+﻿@model IEnumerable<InquiadTradingApp.Models.Purchase>
+@{
+    ViewData["Title"] = "Purchases";
+}
+
+@section Css {
+    <link asp-append-version="true" type="text/css" rel="stylesheet" href="~/vendor/select2/select2.min.css" />
+    @{await Html.RenderPartialAsync("_DataTableCssPartial");}
+}
+
+@section Sole {
+    <style>
+
+
+        .table tr th:last-child {
+            width: 50px;
+        }
+
+        .table tr th {
+            text-align: center;
+        }
+
+        .table tr td {
+            text-align: center;
+        }
+
+        .table tr td {
+            text-align: center;
+        }
+    </style>
+
+    <style>
+        .select2-container .select2-selection {
+            padding: 7px 12px 4px;
+            height: 40px;
+            font-size: .9125rem;
+        }
+    </style>
+}
+
+<div class="container-fluid mt-4">
+    <div class="card animated fadeIn overflow-hidden">
+        <div class="card-header p-3">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="mb-0 skewed skewed-yellow text-dark d-inline-block text-uppercase ls-1">Purchases</h3>
+                </div>
+                <div class="col text-right">
+                    <a asp-controller="PurchaseReturns" asp-action="Index" class="btn btn-create">All Purchase Returns</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body px-0 pb-2">
+            <div class="table-responsive">
+
+                <table class="table align-items-center  table-striped table-bordered" id="datatable-basic">
+                    <thead class="thead-light">
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Vouchar No
+                            </th>
+
+                            <th>
+                                Supplier
+                            </th>
+
+
+                            <th>
+                                Catagory
+                            </th>
+                            <th>
+                                Product
+                            </th>
+                            <th>
+                                Warehouse
+                            </th>
+
+                            <th>
+                                Supplier Warehouse
+                            </th>
+
+                            <th>
+                                Pack Size
+                            </th>
+                            <th>
+                                Pack(s)
+                            </th>
+
+
+
+
+                            <th>
+                                Ton(s)
+                            </th>
+
+                            <th>
+                                Total (Tk)
+                            </th>
+
+                            <th>
+                                Paid (Tk)
+                            </th>
+
+
+                            <th>
+                                Latest Payment Method
+                            </th>
+                            <th>
+                                Latest Payment Details
+                            </th>
+                            <th>
+                                Latest Payment Date
+                            </th>
+                            <th>
+                                Remarks
+                            </th>
+
+                            <th class="text-center">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+
+                            <td class="p-0">
+                                <input readonly class="form-control border-0 border-radius-0 text-center datepicker" id="purchaseDate" type="text" value="" />
+                            </td>
+
+                            <td class="p-0">
+
+                                <input readonly class="form-control border-0 border-radius-0 text-center " id="voucharNo" type="text" value="" />
+                            </td>
+                            <td class="p-0">
+                                <select class="form-control js-single border-0 border-radius-0 " asp-items="ViewBag.VendorId" id="vendorId" data-toggle="select"></select>
+                            </td>
+
+                            <td class="p-0">
+                                <select class="form-control js-single border-0 border-radius-0 " asp-items="ViewBag.ProductCatagoryId" id="productCatagoryId" data-toggle="select"></select>
+                            </td>
+                            <td class="p-0">
+                                <select class="form-control js-single border-0 border-radius-0 " asp-items="ViewBag.ProductId" id="productId" data-toggle="select"></select>
+                            </td>
+
+                            <td class="p-0">
+                                <select class="form-control js-single border-0 border-radius-0 " asp-items="ViewBag.WareHouseId" id="warehouseId" data-toggle="select"></select>
+                            </td>
+                            <td class="p-0">
+                                <input class="form-control border-0 border-radius-0 text-center " id="vendorWareHouse" type="text" value="" />
+                            </td>
+
+                            <td class="p-0">
+                                <select class="form-control js-single border-0 border-radius-0 " asp-items="ViewBag.PackSizeId" id="packSizeId" data-toggle="select"></select>
+
+                            </td>
+                            <td class="p-0">
+                                <input class="form-control border-0 border-radius-0 text-center " id="packAmount" type="text" value="" />
+
+                            </td>
+                            <td class="p-0">
+                                <input class="form-control border-0 border-radius-0 text-center " id="tonAmount" type="text" value="" />
+                            </td>
+
+                            <td class="p-0">
+                                <input class="form-control border-0 border-radius-0 text-center " id="totalAmount" type="text" value="" />
+                            </td>
+                            <td class="p-0">
+                                <input class="form-control border-0 border-radius-0 text-center " id="paidAmount" type="text" value="" />
+                            </td>
+
+                            <td class="p-0">
+                                <select class="form-control" data-toggle="select" id="paymentMethod">
+                                    <option value="0">Cash</option>
+                                    <option value="1">Cheque</option>
+                                </select>
+                            </td>
+                            <td class="p-0">
+                                <input class="form-control border-0 border-radius-0 text-center" disabled id="chequeNo" type="text" value="" />
+                            </td>
+                            <td class="p-0">
+                                <input readonly class="form-control border-0 border-radius-0 text-center datepicker" id="paymentDate" type="text" value="" />
+                            </td>
+                            <td class="p-0">
+                                <input class="form-control border-0 border-radius-0 text-center " id="remarks" type="text" value="" />
+                            </td>
+
+                            <td class="text-center align-middle p-2">
+                                <div class="btn-group">
+                                    <input class="btn btn-success btn-sm save_button mr-0" type="button" name="save_button" id="save_button" value="Save" />
+
+                                </div>
+
+                            </td>
+                        </tr>
+
+
+
+                        @foreach (var item in Model)
+                        {
+                            double totalPaid = 0;
+                            string paymentType = "";
+                            string paymentDetails = "";
+                            string paymentDate = "";
+                            <tr>
+                                <td>
+                                    @String.Format("{0:dd-MM-yyyy}", item.PurchaseDate)
+                                </td>
+                                <td>
+                                    @item.VoucharNo
+                                </td>
+                                <td>
+                                    @item.Vendor.Name
+                                </td>
+
+                                <td>
+                                    @item.Product.ProductCatagory.Name
+                                </td>
+
+                                <td>
+                                    @item.Product.Name
+                                </td>
+                                <td>
+                                    @item.WareHouse.Name
+                                </td>
+                                <td>
+                                    @item.VendorWareWhouse
+                                </td>
+
+                                <td>
+                                    @item.PackSize.Name
+                                </td>
+                                <td>
+                                    @item.PackAmount
+                                </td>
+
+                                <td>
+                                    @item.TonAmount
+                                </td>
+                                <td>
+                                    @item.TotalAmount
+                                </td>
+                                @foreach (var payment in item.Payments)
+                                {
+                                    totalPaid += payment.PaidAmount;
+                                    if (payment.Type == 0)
+                                    {
+                                        paymentType = "Cash";
+                                    }
+                                    else
+                                    {
+                                        paymentType = "Cheque";
+                                    }
+                                    paymentDetails = payment.CheckNo;
+                                    paymentDate = @String.Format("{0:dd-MM-yyyy}", payment.Date);
+                                }
+
+
+
+                                <td>
+                                    @totalPaid
+                                </td>
+
+                                <td>
+                                    @paymentType
+                                </td>
+
+                                 <td>
+                                    @paymentDetails
+                                </td>
+
+                                <td>
+                                    @paymentDate
+                                </td>
+
+
+
+
+                                <td>
+                                    @item.Remarks
+                                </td>
+
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        @if (item.Status == 0)
+                                        {
+
+                                            <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                                            <a class="btn btn-success btn-sm" asp-action="ApprovePurchase" asp-route-id="@item.Id">Approve</a>
+
+
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-success btn-sm" asp-action="PurchaseIndex" asp-controller="Payments" asp-route-purchaseId="@item.Id">Payment</a>
+                                            <a class="btn btn-default btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                            <a class="btn btn-warning btn-sm" asp-controller="PurchaseReturns" asp-action="Create" asp-route-purchaseId="@item.Id">Return</a>
+                                        }
+
+
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script asp-append-version="true" type="text/javascript" src="~/vendor/datatable/js/jquery.dataTables.min.js"></script>
+    <script asp-append-version="true" type="text/javascript" src="~/vendor/datatable/js/dataTables.bootstrap4.min.js"></script>
+
+    <script asp-append-version="true" type="text/javascript" src="~/vendor/select2/select2.min.js"></script>
+    <script src="~/vendor/bootstrap-datepicker/bootstrap-datepicker.min.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#save_button").on('click', function () {
+
+                 var purchaseDate = $("#purchaseDate").val();
+                 var vendorId = $("#vendorId").val();
+                 var productId = $("#productId").val();
+                 var packSizeId = $("#packSizeId").val();
+                 var warehouseId = $("#warehouseId").val();
+                 var vendorWareHouse = $("#vendorWareHouse").val();
+                 var packAmount = $("#packAmount").val();
+                 var tonAmount = $("#tonAmount").val();
+                 var totalAmount = $("#totalAmount").val();
+                var paidAmount = $("#paidAmount").val();
+                 var paymentMethod = $("#paymentMethod").val();
+                 var chequeNo = $("#chequeNo").val();
+                 var paymentDate = $("#paymentDate").val();
+                 var remarks = $("#remarks").val();
+
+                if (productId != "" && productId != null && packSizeId != "" && packSizeId != null && packAmount != "" && packAmount != "NaN" && tonAmount != "NaN" && tonAmount != "" && totalAmount != "" && paymentDate != "" && paidAmount!="") {
+
+                    var url1 = '@Url.Action("SavePurchase", "Purchases")';
+                    $.ajax({
+                        type: "POST",
+                        dataType: 'json',
+                        url: url1,
+                        data: {
+                            purchaseDate: purchaseDate,
+                            vendorId: vendorId,
+                            productId: productId,
+                            warehouseId: warehouseId,
+                            vendorWareHouse: vendorWareHouse,
+                            packAmount: packAmount,
+                            packSizeId: packSizeId,
+                            tonAmount: tonAmount,
+                            totalAmount: totalAmount,
+                            paidAmount: paidAmount,
+                            paymentMethod: paymentMethod,
+                            chequeNo: chequeNo,
+                            paymentDate: paymentDate,
+                            remarks: remarks,
+                        },
+                        cache: false,
+                        success: function (result) {
+                            if (result) {
+                                location.reload();
+                            }
+                            else {
+                                $.notify({
+                                    title: 'Prompt!',
+                                    icon: 'fa fa-times',
+                                    html: true,
+                                    message: 'Something went wrong !'
+                                },
+                                    {
+                                        type: 'warning',
+                                        animate: {
+                                            enter: 'animated fadeInDown'
+                                        },
+                                        placement: {
+                                            from: "top",
+                                            align: "center"
+                                        },
+                                        spacing: 10,
+                                        z_index: 1031,
+                                        delay: 1000,
+                                        template: '<div data-notify="container" class="alert alert-dismissible aler{0alertnotify" role="alert"><span class="alert-icon" datanotify="icon"><span><divclass="alert-text"<div> <span class="alert-title" datanotify="title">{1}</span><spandatanotify="message">{2}<span></div><button type="button"class="close"datanotify="dismiss"aria-label="Close"><spanaria-hidden="true">&times;</span><button></div>'
+                                    });
+                            }
+
+                        }
+                    });
+
+                }
+
+                else {
+
+                    $.notify({
+                        title: 'Prompt!',
+                        icon: 'fa fa-times',
+                        html: true,
+                        message: 'Fill Up all the fields'
+                    },
+                        {
+                            type: 'warning',
+                            animate: {
+                                enter: 'animated fadeInDown'
+                            },
+                            placement: {
+                                from: "top",
+                                align: "center"
+                            },
+                            spacing: 10,
+                            z_index: 1031,
+                            delay: 1000,
+                            template: '<div data-notify="container" class="alert alert-dismissible alert-{0alertnotifyrole="alert"><span class="alert-icon" data-notify="icon"></span><divclass="alerttext"</div<span class="alert-title" data-notify="title">{1}</span><spandatanotify="message">{2<span></div><button type="button" class="close"datanotify="dismiss"arialabel="Close"><spanaria-hidden="true">&times;</span></button></div>'
+                        });
+                }
+
+
+            });
+
+            $("#productCatagoryId").on('change', function () {
+                var productCatagoryId = $("#productCatagoryId").val();
+                $('#productId').empty();
+
+                var url1 = '@Url.Action("GetProductByCatagory", "Products")';
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: url1,
+                    data: {
+                        id: productCatagoryId,
+                    },
+                    cache: false,
+
+                    success: function (objects) {
+
+                        $.each(objects, function (index, object) {
+
+                            $('#productId').append('<option value="' + object.id + '">' + object.name + '</option>');
+                        });
+
+                    }
+                });
+            });
+
+            $("#productId").on('change', function () {
+
+
+                var packSizeId = $("#packSizeId").val();
+                var packAmount = $("#packAmount");
+                var tonAmount = $("#tonAmount");
+
+
+                var url1 = '@Url.Action("GetPackSizeById", "PackSizes")';
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: url1,
+                    data: {
+                        id: packSizeId,
+                    },
+
+                    cache: false,
+                    success: function (result) {
+                        if (packAmount.val() == "" && tonAmount.val() != "") {
+                            var tempPackAmount = (eval(tonAmount.val()) * 1000) / eval(result.totalKilo);;
+
+                            packAmount.val(tempPackAmount)
+                        }
+                        if (tonAmount.val() == "" && packAmount.val() != "") {
+                            var tempTonAmount = (eval(packAmount.val()) * result.totalKilo) / 1000;
+                            tonAmount.val(tempTonAmount)
+                        }
+                        if (packAmount.val() != "" && tonAmount.val() != "") {
+                            var tempPackAmount = (eval(tonAmount.val()) * 1000) / eval(result.totalKilo);;
+
+                            packAmount.val(tempPackAmount)
+                        }
+
+                    }
+                });
+            });
+
+
+            $("#paymentMethod").on('change', function () {
+
+                if ($("#paymentMethod").val() == 1) {
+                    $("#chequeNo").val("");
+                    $("#chequeNo").attr("disabled", false);
+                }
+                else if ($("#paymentMethod").val() == 0) {
+                    $("#chequeNo").val("");
+                    $("#chequeNo").attr("disabled", true);
+                }
+            });
+
+            $("#tonAmount").on('change', function () {
+                var packSizeId = $("#packSizeId").val();
+                var packAmount = $("#packAmount");
+                var tonAmount = $("#tonAmount");
+
+
+                    var url1 = '@Url.Action("GetPackSizeById", "PackSizes")';
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: url1,
+                    data: {
+                        id: packSizeId,
+                    },
+                    cache: false,
+
+                    success: function (result) {
+                        var tempPackAmount = (eval(tonAmount.val()) * 1000) / eval(result.totalKilo);
+
+                        packAmount.val(tempPackAmount)
+                    }
+                });
+
+
+            });
+
+            $("#packAmount").on('change', function () {
+                var packSizeId = $("#packSizeId").val();
+                var packAmount = $("#packAmount");
+                var tonAmount = $("#tonAmount");
+                var url1 = '@Url.Action("GetPackSizeById", "PackSizes")';
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: url1,
+                    data: {
+                        id: packSizeId,
+                    },
+                    cache: false,
+
+                    success: function (result) {
+                        var tempTonAmount = eval((eval(packAmount.val()) * eval(result.totalKilo)) / 1000);
+
+                        tonAmount.val(tempTonAmount)
+                    }
+                });
+
+
+
+            });
+            $("#packSizeId").on('change', function () {
+                var packSizeId = $("#packSizeId").val();
+                var packAmount = $("#packAmount");
+                var tonAmount = $("#tonAmount");
+
+
+                    var url1 = '@Url.Action("GetPackSizeById", "PackSizes")';
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: url1,
+                    data: {
+                        id: packSizeId,
+                    },
+                    cache: false,
+
+                    success: function (result) {
+                        if (packAmount.val() == "" && tonAmount.val() != "") {
+                            var tempPackAmount = (eval(tonAmount.val()) * 1000) / eval(result.totalKilo);;
+
+                            packAmount.val(tempPackAmount)
+                        }
+                        if (tonAmount.val() == "" && packAmount.val() != "" ) {
+                            var tempTonAmount = (eval(packAmount.val()) * result.totalKilo) / 1000;
+                            tonAmount.val(tempTonAmount)
+                        }
+                        if (packAmount.val() != "" && tonAmount.val() != "") {
+                            var tempPackAmount = (eval(tonAmount.val()) * 1000) / eval(result.totalKilo);;
+
+                            packAmount.val(tempPackAmount)
+                        }
+
+                    }
+                });
+
+            });
+        });
+
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

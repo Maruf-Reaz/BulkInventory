@@ -1,0 +1,276 @@
+﻿@model InquiadTradingApp.Models.RentWareHouse
+@{
+    ViewData["Title"] = "Warehouse Rent";
+}
+
+@section Css {
+    <link asp-append-version="true" type="text/css" rel="stylesheet" href="~/vendor/select2/select2.min.css" />
+    @{await Html.RenderPartialAsync("_DataTableCssPartial");}
+}
+
+@section Sole {
+    <style>
+
+
+        .table tr th:last-child {
+            width: 50px;
+        }
+
+        .table tr th {
+            text-align: center;
+        }
+
+        .table tr td {
+            text-align: center;
+        }
+    </style>
+    <style>
+        .select2-container .select2-selection {
+            padding: 7px 12px 4px;
+            height: 40px;
+            font-size: .9125rem;
+        }
+    </style>
+}
+
+<div class="container-fluid mt-4">
+    <div class="card animated fadeIn overflow-hidden">
+        <div class="card-header p-3">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="mb-0 skewed skewed-yellow text-dark d-inline-block text-uppercase ls-1">Warehouse Rent</h3>
+                </div>
+                <div class="col text-right">
+                    <a asp-action="EndRent" asp-route-rentWareHouseId="@ViewBag.RentWareHouseId" class="btn btn-danger">End</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body px-0 pb-2">
+            <div class="table-responsive">
+
+                <table class="table align-items-center  table-striped table-bordered" id="datatable-basic">
+                    <thead class="thead-light">
+                        <tr>
+
+                            <th>
+                                For Purchase
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                From Date
+                            </th>
+                            <th>
+                                To Date
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+                            <th class="text-center">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int lastPurchaseId = 0;
+                            DateTime lastDate = DateTime.Now;
+                        }
+
+                        @foreach (var item in Model.RentWareHouseItems)
+                        {
+                            lastPurchaseId = item.Purchase.Id;
+                            lastDate = item.ToDate;
+                            <tr>
+
+                                <td>
+                                    @item.Purchase.VoucharNo
+                                </td>
+
+                                <td>
+                                    @item.Details
+                                </td>
+                                <td>
+                                    @String.Format("{0:dd-MM-yyyy}", item.FromDate)
+                                </td>
+
+                                <td>
+                                    @String.Format("{0:dd-MM-yyyy}", item.ToDate)
+                                </td>
+
+                                <td>
+                                    @item.Amount
+                                </td>
+
+                                <td class="text-center">
+                                    <div class="btn-group">
+
+
+                                        <a class="btn btn-danger btn-sm" asp-action="DeleteItem" asp-route-rentItemId="@item.Id">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <td class="p-0">
+                                <select class="form-control js-single border-0 border-radius-0 " id="purchaseId" data-toggle="select">
+                                    @foreach (var purchase in ViewBag.PurchaseId)
+                                    {
+                                        if (purchase.Id == lastPurchaseId)
+                                        {
+                                            <option selected value="@purchase.Id">@purchase.VoucharNo</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@purchase.Id">@purchase.VoucharNo</option>
+                                        }
+
+                                    }
+
+
+                                </select>
+                            </td>
+
+                            <td class="p-0">
+
+                                <input class="form-control border-0 border-radius-0 text-center " id="description" type="text" value="" />
+                                <input class="form-control" hidden id="rentWareHouseId" type="text" value="@ViewBag.RentWareHouseId" />
+                            </td>
+
+                            <td class="p-0">
+                                <input readonly class="form-control border-0 border-radius-0 text-center datepicker" id="fromDate" type="text" value="@String.Format("{0:yyyy-MM-dd}", lastDate.AddDays(1))" />
+                            </td>
+                            <td class="p-0">
+                                <input readonly class="form-control border-0 border-radius-0 text-center datepicker" id="toDate" type="text" value="@String.Format("{0:yyyy-MM-dd}", lastDate.AddDays(30))" />
+                            </td>
+
+                            <td class="p-0">
+
+                                <input class="form-control border-0 border-radius-0 text-center " id="amount" type="text" value="" />
+                            </td>
+
+
+                            <td class="text-center align-middle p-2">
+                                <div class="btn-group">
+                                    <input class="btn btn-success btn-sm save_button mr-0" type="button" name="save_button" id="save_button" value="Save" />
+
+                                </div>
+
+                            </td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script asp-append-version="true" type="text/javascript" src="~/vendor/datatable/js/jquery.dataTables.min.js"></script>
+    <script asp-append-version="true" type="text/javascript" src="~/vendor/datatable/js/dataTables.bootstrap4.min.js"></script>
+
+
+    <script asp-append-version="true" type="text/javascript" src="~/vendor/select2/select2.min.js"></script>
+    <script src="~/vendor/bootstrap-datepicker/bootstrap-datepicker.min.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+            $("#save_button").on('click', function () {
+                var purchaseId = $("#purchaseId").val();
+                var description = $("#description").val();
+                var fromDate = $("#fromDate").val();
+                var toDate = $("#toDate").val();
+                var amount = $("#amount").val();
+                var rentWareHouseId = $("#rentWareHouseId").val();
+
+                if (fromDate != "" && fromDate != null && purchaseId != "" && purchaseId != null && toDate != "" && toDate != null && amount != "" && amount) {
+                    var url1 = '@Url.Action("SaveRentItem", "RentWareHouses")';
+                    $.ajax({
+                        type: "POST",
+                        dataType: 'json',
+                        url: url1,
+                        data: {
+                            purchaseId: purchaseId,
+                            description: description,
+                            fromDate: fromDate,
+                            toDate: toDate,
+                            amount: amount,
+                            rentWareHouseId: rentWareHouseId,
+                            },
+                        cache: false,
+                        success: function (result) {
+                            if (result) {
+                                location.reload();
+                            }
+                            else {
+                                $.notify({
+                                    title: 'Prompt!',
+                                    icon: 'fa fa-times',
+                                    html: true,
+                                    message: 'Something went wrong !'
+                                    },
+                                    {
+                                        type: 'warning',
+                                        animate: {
+                                            enter: 'animated fadeInDown'
+                                        },
+
+                                        placement: {
+                                            from: "top",
+                                            align: "center"
+                                        },
+                                        spacing: 10,
+                                        z_index: 1031,
+                                        delay: 1000,
+                                        template: '<div data-notify="container" class="alert alert-dismissible alert-{0} alert-notify" role="alert"><span class="alert-icon" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">{1}</span> <span data-notify="message">{2}</span></div><button type="button" class="close" data-notify="dismiss" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'
+                                    });
+
+
+                            }
+                        }
+                    });
+                }
+                else {
+                    $.notify({
+                        title: 'Prompt!',
+                        icon: 'fa fa-times',
+                        html: true,
+                        message: 'Fill Up all the fields'
+                        },
+                        {
+                            type: 'warning',
+                            animate: {
+                                enter: 'animated fadeInDown'
+                            },
+                            placement: {
+                                from: "top",
+                                align: "center"
+                            },
+                            spacing: 10,
+                            z_index: 1031,
+                            delay: 1000,
+                            template: '<div data-notify="container" class="alert alert-dismissible alert-{0} alert-notify" role="alert"><span class="alert-icon" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">{1}</span> <span data-notify="message">{2}</span></div><button type="button" class="close" data-notify="dismiss" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'
+                        });
+
+                }
+
+            });
+
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

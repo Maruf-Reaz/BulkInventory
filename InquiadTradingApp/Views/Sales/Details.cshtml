@@ -1,0 +1,164 @@
+﻿@model InquiadTradingApp.Models.Sale
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="container-fluid mt-4">
+    <div class="card mb-4 animated fadeIn">
+        <div class="card-header">
+            <h3 class="text-danger mb-0">Sale</h3>
+            <div class="col text-right">
+                <a asp-action="Index" class="btn btn-back">Back</a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Purchase Vouchar No</label>
+                        <input asp-for="Purchase.VoucharNo" class="form-control" disabled />
+                    </div>
+                </div>
+
+                  <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Vouchar No</label>
+                        <input asp-for="VoucharNo" class="form-control" disabled />
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Date</label>
+                        <input asp-for="SaleDate" class="form-control" disabled value="@String.Format("{0:dd-MM-yyyy}", Model.SaleDate)" />
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Broker</label>
+                        <input asp-for="Broker.Name" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Broker Amount</label>
+                        <input asp-for="BrokerAMount" class="form-control" disabled />
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Client</label>
+                        <input asp-for="Client.Name" class="form-control" disabled />
+                    </div>
+                </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Client Warehouse</label>
+                        <input asp-for="ClientWareHouse" class="form-control" disabled />
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Ware House</label>
+                        <input asp-for="Purchase.WareHouse.Name" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Product Catagory</label>
+                        <input asp-for="Purchase.Product.ProductCatagory.Name" class="form-control" disabled />
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Product</label>
+                        <input asp-for="Purchase.Product.Name" class="form-control" disabled />
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label class="control-label">Pack Amount</label>
+                        <input asp-for="PackAmount" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label class="control-label">Pack Size</label>
+                        <input asp-for="Purchase.PackSize.Name" class="form-control" disabled />
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Amount in Ton(s)</label>
+                        <input asp-for="TonAmount" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Total Amount (tk)</label>
+                        <input asp-for="TotalAmount" class="form-control" disabled />
+                    </div>
+                </div>
+
+
+
+
+                @if (Model.PaymentMethod == 0)
+                {
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Payment Method</label>
+                            <input value="Cash" class="form-control" disabled />
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Payment Method</label>
+                            <input value="Cheque No @Model.ChequeNo" class="form-control" disabled />
+                        </div>
+                    </div>
+                }
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Payment Date</label>
+                        <input asp-for="PaymentDate" class="form-control" disabled value="@String.Format("{0:dd-MM-yyyy}", Model.PaymentDate)" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Remarks</label>
+                        <input asp-for="Remarks" class="form-control" disabled />
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+       
+    </script>
+}
+
